@@ -20,7 +20,7 @@ int main(void)
     myArray[3] = 51 ;
     myArray[4] = 61 ;
 
-int* pointArray = myArray;
+int* pointArray = myArray; // As we cannot directly cannot increment an array variable, creating a pointer.
 
     for( short i = 0 ; i < arraySize ; i++)
     {
