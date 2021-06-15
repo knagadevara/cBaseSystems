@@ -17,9 +17,14 @@ int main(void)
         twoDArray[1][0] =  3 ;
         twoDArray[1][1] =  6 ;
         twoDArray[1][2] =  9 ;
-
+        /*
+        twoDArray[i][j] is equal to below
+        *(*(twoDArray + i) + j)
+        or
+        *(twoDArray[i] + j)
+        */
         int (*twoDArrayPointer)[3] = twoDArray;
-        /* Creatig a pointer type of which points to [3] units of integer memory addresses */ 
+        /* Creating a pointer type of which points to [3] units of integer memory addresses */ 
 
         int arraySize1 = sizeof(twoDArray[0]) ;
         int arraySize2 = sizeof(twoDArray[1]) ;
