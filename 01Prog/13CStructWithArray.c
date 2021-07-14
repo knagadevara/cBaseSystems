@@ -8,6 +8,7 @@ struct CreateArray
     int ArrayLength; 
     };
 
+//Creates an Array in the Heap.
 int* CreateHeapIntArray(int* SizeOfArray)
     {   
         *SizeOfArray = (*SizeOfArray) * sizeof(int) ;
@@ -17,7 +18,23 @@ int* CreateHeapIntArray(int* SizeOfArray)
         return NewHeapArray;
     }
 
+//SetLength
+//SetSize
+//CreateArray
+void DefineArray(struct CreateArray* CustomArray)
+    {
+        printf("Enter the size of the array: ");
+        scanf("%d" , &CustomArray->ArraySize);
+        printf("Set the length of the array\n");
+        scanf("%d" , &CustomArray->ArrayLength);
+        if (CustomArray->ArraySize > 0)
+        {
+        CustomArray->ArrayAddress = CreateHeapIntArray(&CustomArray->ArraySize);
+        printf("Array Created\n");
+        }
+    }
 
+//DisplayArrayContents()
 void PrintContentsOfArray(struct CreateArray* CustomArray)
     {
         for (int i = 0; i < CustomArray->ArrayLength ; i++)
@@ -27,27 +44,22 @@ void PrintContentsOfArray(struct CreateArray* CustomArray)
         printf("Freeing memory after printing elements\n");
     }
 
-int DefineArray(struct CreateArray* CustomArray)
+//InsertItemSerially()
+int InsertItemSerially(struct CreateArray* CustomArray)
     {
-        printf("Set the length of the array\n");
-        scanf("%d" , &CustomArray->ArrayLength);
         printf("\nEnter the number of elements to enter inside Array\n");
         for (int i = 0; i < (CustomArray->ArrayLength) ; i++)
             scanf("%d" , &CustomArray->ArrayAddress[i]);
-        PrintContentsOfArray(CustomArray);
         return 0;
-    
     }
 
 
 int main(void)
     {
         struct CreateArray myArray;
-        printf("Enter the size of the array: ");
-        scanf("%d" , &myArray.ArraySize);
-        myArray.ArrayAddress = CreateHeapIntArray(&myArray.ArraySize);
-        printf("Array Created\n");
         DefineArray(&myArray);
+        InsertItemSerially(&myArray);
+        PrintContentsOfArray(&myArray);
         free(myArray.ArrayAddress);
         return 0;
     }
