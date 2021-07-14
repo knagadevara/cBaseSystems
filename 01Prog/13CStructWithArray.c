@@ -11,8 +11,7 @@ struct CreateArray
 //Creates an Array in the Heap.
 int* CreateHeapIntArray(int* SizeOfArray)
     {   
-        *SizeOfArray = (*SizeOfArray) * sizeof(int) ;
-        if (*SizeOfArray<1)
+        if (*SizeOfArray<=1)
             *SizeOfArray = 4;
         int* NewHeapArray = (int*) calloc(*SizeOfArray, sizeof(int));
         return NewHeapArray;
@@ -20,7 +19,7 @@ int* CreateHeapIntArray(int* SizeOfArray)
 
 //SetLength
 //SetSize
-//CreateArray
+//CreatesArray
 void DefineArray(struct CreateArray* CustomArray)
     {
         printf("Enter the size of the array: ");
@@ -41,16 +40,51 @@ void PrintContentsOfArray(struct CreateArray* CustomArray)
         {
             printf("ArrayAddress[%d]: %p \t %d \n" , i , &CustomArray->ArrayAddress[i] , CustomArray->ArrayAddress[i] ) ; 
         }
-        printf("Freeing memory after printing elements\n");
     }
 
 //InsertItemSerially()
-int InsertItemSerially(struct CreateArray* CustomArray)
+void InsertItemSerially(struct CreateArray* CustomArray)
     {
-        printf("\nEnter the number of elements to enter inside Array\n");
-        for (int i = 0; i < (CustomArray->ArrayLength) ; i++)
-            scanf("%d" , &CustomArray->ArrayAddress[i]);
-        return 0;
+        int oneUnit = sizeof(int);
+        size_t arrayLength = oneUnit * CustomArray->ArrayLength;
+        size_t arraySize = oneUnit * CustomArray->ArraySize ;
+        printf("\nEnter the number of elements to enter inside Array, Unit: %d \t Size: %ld \t Length: %ld \n" , oneUnit , arraySize , arrayLength);
+        if(arrayLength <= arraySize)
+            for (int i = 0; i < (CustomArray->ArrayLength) ; i++)
+               scanf("%d" , &CustomArray->ArrayAddress[i]);
+        }
+
+
+void AppendItem(struct CreateArray* CustomArray , int item)
+    {
+        int oneUnit = sizeof(int);
+        size_t arrayLength = oneUnit * CustomArray->ArrayLength;
+        size_t arraySize = oneUnit * CustomArray->ArraySize ;
+        if(arrayLength < arraySize)
+            {
+                CustomArray->ArrayAddress[CustomArray->ArrayLength++] = item ; 
+                printf("\nAppended Element inside the Array\n");
+                CustomArray->ArrayLength++;
+            }
+        else
+            printf("No Space Left \n");
+    }
+
+
+void InsertItem(struct CreateArray* CustomArray , int index , int item)
+    {
+        int oneUnit = sizeof(int);
+        // size_t arrayLength = oneUnit * CustomArray->ArrayLength;
+        // size_t arraySize = oneUnit * CustomArray->ArraySize ;
+        if(index >= 0 && index <= CustomArray->ArrayLength )
+            {
+                for (int i = CustomArray->ArrayLength ; i > index ; i-- )
+                        CustomArray->ArrayAddress[CustomArray->ArrayLength] = CustomArray->ArrayAddress[CustomArray->ArrayLength - 1] ;
+                CustomArray->ArrayAddress[index] = item;
+                CustomArray->ArrayLength++;
+            }
+        else
+            printf("Out Of Bound \n");
     }
 
 
@@ -59,7 +93,9 @@ int main(void)
         struct CreateArray myArray;
         DefineArray(&myArray);
         InsertItemSerially(&myArray);
+        AppendItem(&myArray , 99);
         PrintContentsOfArray(&myArray);
         free(myArray.ArrayAddress);
+        printf("Freeing memory after printing elements\n");
         return 0;
     }
