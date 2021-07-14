@@ -28,8 +28,7 @@ void PrintContentsOfArray(struct CreateArray* CustomArray)
 
 int DefineArray(struct CreateArray* CustomArray)
     {
-        printf("Enter the size of the array: ");
-        scanf("%d" , &CustomArray->ArraySize);
+
         printf("Set the length of the array\n");
         scanf("%d" , &CustomArray->ArrayLength);
 
@@ -50,7 +49,9 @@ int DefineArray(struct CreateArray* CustomArray)
 
 int main(void)
     {
-        struct CreateArray myArray;    
+        struct CreateArray myArray;
+        printf("Enter the size of the array: ");
+        scanf("%d" , &myArray.ArraySize);
         myArray.ArrayAddress = CreateHeapIntArray(&myArray.ArraySize);
         printf("Array Created\n");
         DefineArray(&myArray);
