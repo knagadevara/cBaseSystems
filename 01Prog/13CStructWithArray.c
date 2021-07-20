@@ -36,9 +36,10 @@ void DefineArray(struct CreateArray* CustomArray)
 //DisplayArrayContents()
 void PrintContentsOfArray(struct CreateArray* CustomArray)
     {
+        printf("-------------------- ------------------------- -------------------- \n");
         for (int i = 0; i < CustomArray->ArrayLength ; i++)
         {
-            printf("ArrayAddress[%d]: %p \t %d \n" , i , &CustomArray->ArrayAddress[i] , CustomArray->ArrayAddress[i] ) ; 
+            printf("[%d]: %p \t %d \n" , i , &CustomArray->ArrayAddress[i] , CustomArray->ArrayAddress[i] ) ; 
         }
     }
 
@@ -69,7 +70,7 @@ void AppendItem(struct CreateArray* CustomArray , int item)
 
 void InsertItem(struct CreateArray* CustomArray , int index , int item)
     {
-        if(index >= 0 && index <= CustomArray->ArrayLength && index < CustomArray->ArraySize)
+        if(index >= 0 && index <= CustomArray->ArrayLength)
             {
                 for (int i = CustomArray->ArrayLength ; i > index ; i-- )
                         CustomArray->ArrayAddress[CustomArray->ArrayLength] = CustomArray->ArrayAddress[CustomArray->ArrayLength - 1] ;
@@ -80,6 +81,55 @@ void InsertItem(struct CreateArray* CustomArray , int index , int item)
             printf("Out Of Bound \n");
     }
 
+// Delete an item at the index
+int DeleteItem(struct CreateArray* CustomArray , int index)
+    {
+
+        if(index >= 0 && index <= CustomArray->ArrayLength)
+            {
+            // move the items after deletion.
+            int item = CustomArray->ArrayAddress[index] ;
+            for (size_t i = index ; i < CustomArray->ArrayLength -  1; i++)
+                CustomArray->ArrayAddress[i] = CustomArray->ArrayAddress[i+1];
+            CustomArray->ArrayLength--;
+            return item;
+            }
+        return 0;
+    }
+
+// Gradually increases the performance
+void SwapTrasnpose(struct CreateArray* CustomArray , int oldIndex , int newIndex)
+    {
+        if (newIndex >= 0)
+        {
+            int temp = CustomArray->ArrayAddress[oldIndex];
+            CustomArray->ArrayAddress[oldIndex] = CustomArray->ArrayAddress[newIndex];
+            CustomArray->ArrayAddress[newIndex] = temp;
+        }
+
+    }
+
+//Directly Swaps with 0 index
+void SwapToZero(int* oldIndexValue , int* zeroIndexValue)
+    {
+            int temp = *oldIndexValue;
+            *oldIndexValue = *zeroIndexValue;
+            *zeroIndexValue = temp;
+    }
+
+// Search the array with improvement in time for next search by Transposition
+int SearchItemLinear(struct CreateArray* CustomArray , int item)
+    {
+        for(int i = 0 ; i < CustomArray->ArrayLength ; i++)
+            if (CustomArray->ArrayAddress[i] == item)
+            {   
+                SwapTrasnpose(CustomArray , i , i - 1 );
+                SwapToZero(&CustomArray->ArrayAddress[i - 1] , &CustomArray->ArrayAddress[0]);
+                return i;
+            }
+        return -1;
+    }
+
 
 int main(void)
     {
@@ -88,6 +138,8 @@ int main(void)
         InsertItemSerially(&myArray);
         AppendItem(&myArray , 99);
         InsertItem(&myArray , 9 , 35);
+        DeleteItem(&myArray , 9);
+        SearchItemLinear(&myArray , 7);
         PrintContentsOfArray(&myArray);
         free(myArray.ArrayAddress);
         printf("Freeing memory after printing elements\n");
